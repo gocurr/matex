@@ -9,7 +9,7 @@ import (
 	"math"
 )
 
-// printing in a pretty way
+// BetterPrint printing in a pretty way
 func BetterPrint(dense *mat.Dense) {
 	fmt.Printf("Matrix :\n%v\n\n", mat.Formatted(dense, mat.Prefix(""), mat.Excerpt(0)))
 	rows, cols := dense.Dims()
@@ -17,7 +17,7 @@ func BetterPrint(dense *mat.Dense) {
 	fmt.Println("Matrix: cols: ", cols)
 }
 
-// flatten [][] -> r, c, []
+// Flatten flattens [][] -> r, c, []
 func Flatten(f [][]float64) (r, c int, d []float64) {
 	r = len(f)
 	if r == 0 {
@@ -34,24 +34,24 @@ func Flatten(f [][]float64) (r, c int, d []float64) {
 	return r, c, d
 }
 
-// power by number `n`
+// PowByN returns matrix whose elements will be powered by number `n`
 func PowByN(dense *mat.Dense, n float64) *mat.Dense {
 	return BiForEach(dense, n, math.Pow)
 }
 
-// return matrix whose elements will be squared
+// Square return matrix whose elements will be squared
 func Square(dense *mat.Dense) *mat.Dense {
 	return ForEach(dense, math.Sqrt)
 }
 
-// return matrix whose elements will be multiply by `x`
+// Multiply returns matrix whose elements will be multiplied by `x`
 func Multiply(dense *mat.Dense, x float64) *mat.Dense {
 	return BiForEach(dense, x, func(a, b float64) float64 {
 		return a * b
 	})
 }
 
-// for-each
+// ForEach returns matrix whose elements will be invoked by `fn` with 1 parameter
 func ForEach(dense *mat.Dense, fn func(item float64) float64) *mat.Dense {
 	var builder []float64
 	r, c := dense.Dims()
@@ -62,7 +62,7 @@ func ForEach(dense *mat.Dense, fn func(item float64) float64) *mat.Dense {
 	return mat.NewDense(r, c, builder)
 }
 
-// bi-for-each
+// BiForEach returns matrix whose elements will be invoked by `fn` with 2 parameters
 func BiForEach(dense *mat.Dense, another float64, fn func(a, b float64) float64) *mat.Dense {
 	var builder []float64
 	r, c := dense.Dims()
@@ -73,7 +73,7 @@ func BiForEach(dense *mat.Dense, another float64, fn func(a, b float64) float64)
 	return mat.NewDense(r, c, builder)
 }
 
-// return matrix whose elements will be `trued`, 0 -> 0, !0 -> 1
+// MatrixTruth returns matrix whose elements will be `trued`, 0 -> 0, !0 -> 1
 func MatrixTruth(dense *mat.Dense) *mat.Dense {
 	return ForEach(dense, func(item float64) float64 {
 		if item == 0 {
@@ -84,29 +84,29 @@ func MatrixTruth(dense *mat.Dense) *mat.Dense {
 	})
 }
 
-// return matrix which has 1 row with max column value
+// MaxColumn returns matrix which has 1 row with max column value
 func MaxColumn(dense *mat.Dense) *mat.Dense {
 	return MatrixColumnForEach(dense, mat.Max)
 }
 
-// return matrix which has 1 row with min column value
+// MinColumn returns matrix which has 1 row with min column value
 func MinColumn(dense *mat.Dense) *mat.Dense {
 	return MatrixColumnForEach(dense, mat.Min)
 }
 
-// return matrix which has 1 row with sum column value
+// ColSum returns matrix which has 1 row with sum column value
 func ColSum(dense *mat.Dense) *mat.Dense {
 	return MatrixColumnForEach(dense, mat.Sum)
 }
 
-// matrix column for-each function
+// MatrixColumnForEach matrix column for-each function
 func MatrixColumnForEach(dense *mat.Dense, fn func(a mat.Matrix) float64) *mat.Dense {
 	var builder []float64
 	_, c := dense.Dims()
 	for i := 0; i < c; i++ {
 		colView := dense.ColView(i)
-		sum := fn(colView)
-		builder = append(builder, sum)
+		out := fn(colView)
+		builder = append(builder, out)
 	}
 
 	return mat.NewDense(1, c, builder)
