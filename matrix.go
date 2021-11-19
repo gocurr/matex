@@ -1,5 +1,5 @@
-// matext is the extension for gonum.mat
-// usage like jblas in java
+// matext is the extension of gonum.mat
+// usage like `jblas` (partial implementation) in java
 
 package matext
 
