@@ -11,7 +11,10 @@ go get -u github.com/gocurr/matex
 Import it in your program as:
 
 ```go
-import "github.com/gocurr/matex"
+import (
+    "github.com/gocurr/matex"
+    "gonum.org/v1/gonum/mat"
+)
 ```
 
 It requires Go 1.11 or later due to usage of Go Modules.
